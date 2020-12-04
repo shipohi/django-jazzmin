@@ -210,7 +210,9 @@ def admin_extra_filters(cl: ChangeList) -> Dict:
 @register.simple_tag
 def jazzmin_list_filter(cl: ChangeList, spec: BooleanFieldListFilter) -> SafeText:
     tpl = get_template(spec.template)
-    choices = list(spec.choices(cl))
+    choices = spec.choices(cl)
+    if not isinstance(choices, list):
+       choices = list(choices)
     field_key = get_filter_id(spec)
     matched_key = field_key
     for choice in choices:
